@@ -4,10 +4,11 @@ import { useAuth } from '@/composables/useAuth'
 
 // Importación lazy de vistas (carga bajo demanda)
 const HomeView      = () => import('@/views/HomeView.vue')
+//const signup     = () => import('@/views/Signup.vue')
 const LoginView     = () => import('@/views/LoginView.vue')
 const DashboardView = () => import('@/views/DashboardView.vue')
 const NotFoundView  = () => import('@/views/NotFoundView.vue')
-
+const RegisterView  = () => import('@/views/RegisterView.vue')
 const routes = [
   {
     path: '/',
@@ -44,6 +45,38 @@ const routes = [
     component: NotFoundView,
     meta: { title: 'Página no encontrada' },
   },
+  {
+
+  },
+
+//   {
+// path: '/signup',
+// name: 'about',
+// component: signup,
+// meta: {
+//   title: 'Acerca de',
+//   requiresAuth: false,  
+
+// },
+
+
+
+//},
+{
+  path: '/register',
+  name: 'register',
+  component: RegisterView,
+  meta: {
+    title: 'Registro',
+    requiresAuth: false,  
+    guestOnly: true,   // Si ya estás autenticado, te redirige al dashboard
+  },
+}
+
+
+
+
+
 ]
 
 const router = createRouter({

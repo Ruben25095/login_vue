@@ -49,7 +49,7 @@
           <div class="code-card__bar">
             <span></span><span></span><span></span>
           </div>
-          <pre class="code-card__body"><code><span class="t-comment">// Navigation Guard</span>
+          <pre class="code-card__body"><code><span class="t-comment">// Navigation Guard </span>
 <span class="t-keyword">router</span>.<span class="t-fn">beforeEach</span>(<span class="t-param">(to, from)</span> => {
   <span class="t-keyword">const</span> { isAuthenticated }
     = <span class="t-fn">useAuth</span>()

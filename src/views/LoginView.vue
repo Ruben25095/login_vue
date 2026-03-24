@@ -68,10 +68,11 @@
         </div>
 
         <!-- Credenciales de prueba -->
-        <div class="hint-box">
-          <span class="hint-label">Credenciales de prueba:</span>
-          <code>admin@vue.com</code> / <code>vue1234</code>
-        </div>
+          
+           <a class="linkregister" @click="gotosingup">Registrarse</a>
+          
+
+        
 
         <!-- Botón submit -->
         <button
@@ -83,7 +84,7 @@
           <span v-if="!isLoading">Iniciar sesión →</span>
           <span v-else class="spinner"></span>
         </button>
-
+              <a class="link" @click="gotosingup">Olvide mi contraseña</a>
       </form>
     </div>
   </div>
@@ -98,6 +99,14 @@ const router = useRouter()
 const { login } = useAuth()
 
 // ── Estado del formulario ──
+
+const gotosingup= () => {
+  router.push('/register')
+}
+
+
+
+
 const form = reactive({
   email: '',
   password: '',
@@ -139,35 +148,19 @@ function isFormValid() {
   return !errors.email && !errors.password
 }
 
-// ── Login simulado ──
-async function handleLogin() {
-  errorMsg.value = ''
-
-  if (!isFormValid()) return
-
-  isLoading.value = true
-
+ async function handleLogin() {
   try {
-    // Simulamos una llamada a API con un delay
-    await new Promise(resolve => setTimeout(resolve, 1200))
 
-    // Credenciales de prueba
-    const FAKE_USER = { email: 'admin@vue.com', password: 'vue1234' }
+    await login(email.value, password.value)
 
-    if (form.email === FAKE_USER.email && form.password === FAKE_USER.password) {
-      // Login exitoso
-      login(
-        { name: 'Admin', email: form.email },
-        'fake-jwt-token-abc123'
-      )
-      await router.push('/dashboard')
-    } else {
-      errorMsg.value = 'Credenciales incorrectas. Intenta de nuevo.'
-    }
-  } finally {
-    isLoading.value = false
+    router.push('/dashboard')
+
+  } catch (error) {
+    console.error(error.message)
   }
 }
+
+  
 </script>
 
 <style scoped>
@@ -217,6 +210,8 @@ async function handleLogin() {
     0 0 0 1px rgba(255,255,255,0.03),
     0 24px 48px rgba(0, 0, 0, 0.5);
   animation: cardIn 0.4s ease both;
+ 
+
 }
 
 @keyframes cardIn {
@@ -281,6 +276,7 @@ async function handleLogin() {
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
+  
 }
 
 .field {
@@ -323,6 +319,29 @@ async function handleLogin() {
   transition: border-color 0.2s, background 0.2s;
   outline: none;
   box-sizing: border-box;
+}
+
+.linkregister {
+
+
+  max-width: 25%;
+  color: #c8a96e;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.link {
+  flex: 1;
+  
+  max-width: 50%;
+  color: #c8a96e;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
 }
 
 .field-input::placeholder { color: #3e3a36; }
@@ -393,6 +412,7 @@ code {
   cursor: pointer;
   transition: opacity 0.2s, transform 0.15s;
   letter-spacing: 0.01em;
+   
 }
 
 .btn-submit:hover:not(:disabled) {
