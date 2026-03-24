@@ -311,7 +311,7 @@ async function handleRegister() {
   try {
     await new Promise(resolve => setTimeout(resolve, 1200))
 
-    const result = signUp(form.email, form.password, { 
+    const result = await signUp(form.email, form.password, { 
       full_name: form.name 
     })
 
@@ -335,7 +335,7 @@ async function handleRegister() {
         clearInterval(timer)
         router.push('/dashboard')
       }
-    }, 1000)
+    },1000)
 
   } finally {
     isLoading.value = false

@@ -45,9 +45,7 @@ const routes = [
     component: NotFoundView,
     meta: { title: 'Página no encontrada' },
   },
-  {
-
-  },
+ 
 
 //   {
 // path: '/signup',

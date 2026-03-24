@@ -1,50 +1,59 @@
 import { computed, ref } from 'vue';
 import { supabase } from '@/lib/supabase';
 
-// Estado global persistente fuera de la función para que sea compartido
+// Estado global persistente (fuera de la función para compartirlo entre componentes)
 const _user = ref(null)
 const _session = ref(null)
 
 export function useAuth() {
-
   const isAuthenticated = computed(() => !!_session.value)
   const user = computed(() => _user.value)
 
   /**
-   * Registro de nuevo usuario
+   * Registro de nuevo usuario con manejo de errores amigable
    */
   async function signUp(email, password, metadata = {}) {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        // Aquí puedes pasar el nombre o datos adicionales
-        data: metadata 
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: metadata // Aquí guardamos full_name, etc.
+        }
+      })
+
+      if (error) {
+        return { ok: false, error: error.message }
       }
-    })
 
-    if (error) throw error
-
-    // Si la confirmación de email está desactivada en Supabase, 
-    // podemos asignar la sesión inmediatamente
-    if (data?.session) {
-      _session.value = data.session
-      _user.value = data.user
+      // Si la confirmación de email está desactivada en Supabase,
+      // asignamos la sesión inmediatamente
+      if (data?.session) {
+        _session.value = data.session
+        _user.value = data.user
+      }
+      
+      return { ok: true, data }
+    } catch (err) {
+      return { ok: false, error: err.message || 'Error de conexión' }
     }
-    
-    return data
   }
 
   async function login(email, password) {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    })
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      })
 
-    if (error) throw error
+      if (error) return { ok: false, error: error.message }
 
-    _user.value = data.user
-    _session.value = data.session
+      _user.value = data.user
+      _session.value = data.session
+      return { ok: true, data }
+    } catch (err) {
+      return { ok: false, error: err.message }
+    }
   }
 
   async function logout() {
@@ -62,7 +71,7 @@ export function useAuth() {
   return {
     user,
     isAuthenticated,
-    signUp, // <--- Nueva función expuesta
+    signUp,
     login,
     logout,
     getSession
