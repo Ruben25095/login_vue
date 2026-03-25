@@ -1,6 +1,7 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
+import Resetpassword from '@/views/Resetpassword.vue'
 
 // Importación lazy de vistas (carga bajo demanda)
 const HomeView      = () => import('@/views/HomeView.vue')
@@ -9,6 +10,8 @@ const LoginView     = () => import('@/views/LoginView.vue')
 const DashboardView = () => import('@/views/DashboardView.vue')
 const NotFoundView  = () => import('@/views/NotFoundView.vue')
 const RegisterView  = () => import('@/views/RegisterView.vue')
+const Forgotpassword = () => import('@/views/Forgotpassword.vue')
+const Updatepassword = () => import('@/views/Resetpassword.vue')
 const routes = [
   {
     path: '/',
@@ -38,6 +41,15 @@ const routes = [
       requiresAuth: true,  // 🔒 Ruta protegida
     },
   },
+    {
+    path: '/reset-password',
+    name: 'reset-password',
+    component: Updatepassword,
+    meta: {
+      title: 'Restablecer contraseña',
+      requiresAuth: true,  // 🔒 Ruta protegida
+    },
+  },
   {
     // Catch-all: cualquier ruta no definida → 404
     path: '/:pathMatch(.*)*',
@@ -45,7 +57,13 @@ const routes = [
     component: NotFoundView,
     meta: { title: 'Página no encontrada' },
   },
- 
+  {
+    // Catch-all: cualquier ruta no definida → 404
+    path: '/forgot-password',
+    name: 'not-found',
+    component: Forgotpassword,
+    meta: { title: 'Página no encontrada' },
+  },
 
 //   {
 // path: '/signup',

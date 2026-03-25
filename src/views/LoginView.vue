@@ -84,7 +84,7 @@
           <span v-if="!isLoading">Iniciar sesión →</span>
           <span v-else class="spinner"></span>
         </button>
-              <a class="link" @click="gotosingup">Olvide mi contraseña</a>
+              <a class="link" @click="gotoforgotpassword">Olvide mi contraseña</a>
       </form>
     </div>
   </div>
@@ -102,6 +102,10 @@ const { login } = useAuth()
 
 const gotosingup= () => {
   router.push('/register')
+}
+
+const gotoforgotpassword= () => {
+  router.push('/forgot-password')
 }
 
 

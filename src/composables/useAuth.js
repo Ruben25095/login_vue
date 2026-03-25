@@ -67,6 +67,15 @@ export function useAuth() {
     _session.value = data.session
     _user.value = data.session?.user ?? null
   }
+  async function resetPassword(email) {
+      try {
+        const { error } = await supabase.auth.resetPasswordForEmail(email)
+        if (error) throw error
+        return { success: true }
+      } catch (error) {
+        return { success: false, message: error.message }
+      }
+    }
 
   return {
     user,
@@ -74,6 +83,7 @@ export function useAuth() {
     signUp,
     login,
     logout,
-    getSession
+    getSession,
+    resetPassword
   }
 }
