@@ -51,8 +51,8 @@ const router = useRouter()
 const { isAuthenticated, user, logout } = useAuth()
 
 async function handleLogout() {
-  logout()
-  await router.push('/login')
+  await logout()
+    router.push('/login')
 }
 </script>
 

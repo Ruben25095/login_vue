@@ -137,8 +137,8 @@ const activity = [
 
 // ── Logout ──
 async function handleLogout() {
-  logout()
-  await router.push('/login')
+  await logout()
+   router.push('/login')
 }
 </script>
 
