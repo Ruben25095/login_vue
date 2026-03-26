@@ -47,10 +47,10 @@ const routes = [
     component: Updatepassword,
     meta: {
       title: 'Restablecer contraseña',
-      requiresAuth: false,  // 🔒 Ruta protegida
+      requiresAuth: true,  // 🔒 Ruta protegida
     },
   },   
-  
+
   {
     // Catch-all: cualquier ruta no definida → 404
     path: '/:pathMatch(.*)*',
