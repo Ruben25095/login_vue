@@ -49,7 +49,8 @@ const routes = [
       title: 'Restablecer contraseña',
       requiresAuth: false,  // 🔒 Ruta protegida
     },
-  },
+  },   
+  
   {
     // Catch-all: cualquier ruta no definida → 404
     path: '/:pathMatch(.*)*',
