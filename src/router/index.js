@@ -47,7 +47,7 @@ const routes = [
     component: Updatepassword,
     meta: {
       title: 'Restablecer contraseña',
-      requiresAuth: true,  // 🔒 Ruta protegida
+      requiresAuth: false,  // 🔒 Ruta protegida
     },
   },   
 
