@@ -53,21 +53,74 @@ async function handleUpdate() {
   loading.value = true
   message.value = ''
 
-  const result = await updatePassword(password.value)
+  // Extraemos el token (asumiendo que viene en la URL: ?token=abc...)
+  const token = router.currentRoute.value.query.token 
+
+  // Enviamos la petición al servidor
+  const result = await updatePassword(password.value, token)
   
   success.value = result.success
   loading.value = false
 
   if (result.success) {
     message.value = 'Contraseña actualizada correctamente. Redirigiendo...'
-    // Esperamos 2 segundos para que el usuario lea el mensaje y redirigimos al login
+
+    // --- INICIO DE LIMPIEZA EN EL CLIENTE ---
+    
+    // A. Limpiar almacenamiento local (LocalStorage / SessionStorage)
+    // Borramos el token o cualquier bandera de "recuperación"
+    localStorage.removeItem('recovery_token'); 
+    sessionStorage.clear(); // Opcional: Limpia toda la sesión temporal
+
+    // B. Limpiar Cookies (si el token se manejó por ahí)
+    // Document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+    // C. Reiniciar el estado de los inputs (Seguridad visual)
+    password.value = '';
+    confirmPassword.value = '';
+
+    // D. Invalidar estado en el Store (Si usas Pinia o Vuex)
+    // authStore.resetRecoveryState();
+
+    // --- FIN DE LIMPIEZA ---
+
     setTimeout(() => {
-      router.push('/login')
+      // Usamos replace en lugar de push para que el usuario no pueda 
+      // volver atrás a la página de "cambio de contraseña" con el botón del navegador
+      router.replace('/login')
     }, 2000)
+    
   } else {
     message.value = result.message || 'Error al actualizar la contraseña.'
   }
 }
+
+// async function handleUpdate() {
+//   // 1. Validación básica de coincidencia
+//   if (password.value !== confirmPassword.value) {
+//     success.value = false
+//     message.value = 'Las contraseñas no coinciden.'
+//     return
+//   }
+
+//   loading.value = true
+//   message.value = ''
+
+//   const result = await updatePassword(password.value)
+  
+//   success.value = result.success
+//   loading.value = false
+
+//   if (result.success) {
+//     message.value = 'Contraseña actualizada correctamente. Redirigiendo...'
+//     // Esperamos 2 segundos para que el usuario lea el mensaje y redirigimos al login
+//     setTimeout(() => {
+//       router.push('/login')
+//     }, 2000)
+//   } else {
+//     message.value = result.message || 'Error al actualizar la contraseña.'
+//   }
+// }
 </script>
 
 <style scoped>
