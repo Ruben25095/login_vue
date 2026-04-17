@@ -32,6 +32,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
+import { supabase } from '@/lib/supabase'
 
 const password = ref('')
 const confirmPassword = ref('')
@@ -64,7 +65,7 @@ async function handleUpdate() {
 
   if (result.success) {
     message.value = 'Contraseña actualizada correctamente. Redirigiendo...'
-
+     await supabase.auth.signOut() // Aseguramos que el usuario se desloguee completamente
     // --- INICIO DE LIMPIEZA EN EL CLIENTE ---
     
     // A. Limpiar almacenamiento local (LocalStorage / SessionStorage)
@@ -87,6 +88,7 @@ async function handleUpdate() {
     setTimeout(() => {
       // Usamos replace en lugar de push para que el usuario no pueda 
       // volver atrás a la página de "cambio de contraseña" con el botón del navegador
+     // Aseguramos que el usuario se desloguee completamente antes de redirigir
       router.replace('/login')
     }, 2000)
     

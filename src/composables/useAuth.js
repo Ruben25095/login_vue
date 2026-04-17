@@ -81,6 +81,10 @@ export function useAuth() {
   try {
     const { data, error } = await supabase.auth.updateUser({
       password: newPassword
+
+       
+
+
     })
     if (error) throw error
     return { success: true, data }
